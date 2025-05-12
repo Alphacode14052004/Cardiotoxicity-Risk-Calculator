@@ -10,7 +10,7 @@
       margin: 0;
       padding: 20px;
     }
-
+    
     .container {
       max-width: 600px;
       margin: auto;
@@ -19,19 +19,19 @@
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-
+    
     form label {
       display: block;
       margin-top: 10px;
     }
-
+    
     form input {
       width: 100%;
       padding: 8px;
       margin-top: 5px;
       box-sizing: border-box;
     }
-
+    
     button {
       margin-top: 15px;
       padding: 10px 20px;
@@ -42,7 +42,7 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
+    
     .report-card {
       border: 2px solid #e0e0e0;
       padding: 20px;
@@ -51,43 +51,47 @@
       text-align: left;
       margin-top: 20px;
     }
-
+    
     .risk-badge {
       padding: 5px 10px;
       border-radius: 5px;
       font-weight: bold;
       color: white;
     }
-
+    
     .risk-low {
       background-color: #4CAF50;
     }
-
+    
     .risk-high {
       background-color: #F44336;
     }
-
+    
     .score-section {
       margin-top: 20px;
       text-align: center;
     }
+    
+    canvas {
+      width: 200px;
+      height: 100px;
+    }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="container">
     <h1>Cardiotoxicity Risk Calculator</h1>
     <form id="riskForm">
-      <label for="cardiotoxicity">Cardiotoxicity (A):</label>
+      <label for="cardiotoxicity">Cardiotoxicity:</label>
       <input type="number" id="cardiotoxicity" required>
 
-      <label for="dose">Dose (B):</label>
+      <label for="dose">Dose:</label>
       <input type="number" id="dose" required>
 
-      <label for="platelet">Platelet (C):</label>
+      <label for="platelet">Platelet:</label>
       <input type="number" id="platelet" required>
 
-      <label for="creatinine">Creatinine (D):</label>
+      <label for="creatinine">Creatinine:</label>
       <input type="number" id="creatinine" required>
 
       <button type="submit">Calculate Risk</button>
@@ -102,7 +106,7 @@
         <p><strong>Creatinine:</strong> <span id="v_creatinine"></span></p>
 
         <div class="score-section">
-          <canvas id="scoreGauge" width="200" height="100"></canvas>
+          <canvas id="scoreGauge"></canvas>
           <p><strong>Score:</strong> <span id="score"></span></p>
           <p><strong>Risk Level:</strong>
             <span id="riskLevel" class="risk-badge"></span>
@@ -114,7 +118,7 @@
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     document.getElementById('riskForm').addEventListener('submit', function (e) {
       e.preventDefault();
@@ -163,7 +167,7 @@
           }]
         },
         options: {
-          responsive: false,
+          responsive: true,
           plugins: {
             tooltip: { enabled: false },
             legend: { display: false }
@@ -177,5 +181,6 @@
       html2pdf().from(element).save('Cardiotoxicity_Risk_Report.pdf');
     });
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>
