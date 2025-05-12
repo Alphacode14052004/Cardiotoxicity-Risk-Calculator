@@ -10,7 +10,6 @@
       margin: 0;
       padding: 20px;
     }
-    
     .container {
       max-width: 600px;
       margin: auto;
@@ -19,19 +18,16 @@
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-    
     form label {
       display: block;
       margin-top: 10px;
     }
-    
     form input {
       width: 100%;
       padding: 8px;
       margin-top: 5px;
       box-sizing: border-box;
     }
-    
     button {
       margin-top: 15px;
       padding: 10px 20px;
@@ -42,7 +38,6 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    
     .report-card {
       border: 2px solid #e0e0e0;
       padding: 20px;
@@ -51,27 +46,22 @@
       text-align: left;
       margin-top: 20px;
     }
-    
     .risk-badge {
       padding: 5px 10px;
       border-radius: 5px;
       font-weight: bold;
       color: white;
     }
-    
     .risk-low {
       background-color: #4CAF50;
     }
-    
     .risk-high {
       background-color: #F44336;
     }
-    
     .score-section {
       margin-top: 20px;
       text-align: center;
     }
-    
     canvas {
       width: 200px;
       height: 100px;
@@ -83,16 +73,16 @@
     <h1>Cardiotoxicity Risk Calculator</h1>
     <form id="riskForm">
       <label for="cardiotoxicity">Cardiotoxicity:</label>
-      <input type="number" id="cardiotoxicity" required>
+      <input type="number" id="cardiotoxicity" required step="any" placeholder="e.g. -1.23">
 
       <label for="dose">Dose:</label>
-      <input type="number" id="dose" required>
+      <input type="number" id="dose" required step="any" placeholder="e.g. 0.456">
 
       <label for="platelet">Platelet:</label>
-      <input type="number" id="platelet" required>
+      <input type="number" id="platelet" required step="any" placeholder="e.g. -150.75">
 
       <label for="creatinine">Creatinine:</label>
-      <input type="number" id="creatinine" required>
+      <input type="number" id="creatinine" required step="any" placeholder="e.g. 1.2345">
 
       <button type="submit">Calculate Risk</button>
     </form>
@@ -131,12 +121,10 @@
       const score = 1.8113 * A + 0.6296 * B - 0.6255 * C + 1.339 * D;
       const risk = score > 0.771327786 ? "High Risk" : "Low Risk";
 
-      // Show input values in report
       document.getElementById('v_cardiotoxicity').textContent = A;
       document.getElementById('v_dose').textContent = B;
       document.getElementById('v_platelet').textContent = C;
       document.getElementById('v_creatinine').textContent = D;
-
       document.getElementById('score').textContent = score.toFixed(4);
 
       const riskLevelEl = document.getElementById('riskLevel');
@@ -144,8 +132,6 @@
       riskLevelEl.className = 'risk-badge ' + (risk === "High Risk" ? 'risk-high' : 'risk-low');
 
       document.getElementById('outputSection').style.display = 'block';
-
-      // Draw Gauge
       drawGauge(score);
     });
 
@@ -153,7 +139,6 @@
     function drawGauge(score) {
       const ctx = document.getElementById('scoreGauge').getContext('2d');
       if (chart) chart.destroy();
-
       chart = new Chart(ctx, {
         type: 'doughnut',
         data: {
