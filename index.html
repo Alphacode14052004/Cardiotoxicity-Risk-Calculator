@@ -5,162 +5,177 @@
   <title>Cardiotoxicity Risk Calculator</title>
   <style>
     body {
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
-    margin: 0;
-    padding: 20px;
-  }
-  
-  .container {
-    max-width: 600px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  form label {
-    display: block;
-    margin-top: 10px;
-  }
-  
-  form input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    box-sizing: border-box;
-  }
-  
-  button {
-    margin-top: 15px;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    background-color: #007BFF;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .report-card {
-    border: 2px solid #e0e0e0;
-    padding: 20px;
-    border-radius: 10px;
-    background: #fefefe;
-    text-align: left;
-    margin-top: 20px;
-  }
-  
-  .risk-badge {
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-weight: bold;
-    color: white;
-  }
-  
-  .risk-low {
-    background-color: #4CAF50;
-  }
-  
-  .risk-high {
-    background-color: #F44336;
-  }
-  
-  .score-section {
-    margin-top: 20px;
-    text-align: center;
-  }
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    form label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    form input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background-color: #007BFF;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .report-card {
+      border: 2px solid #e0e0e0;
+      padding: 20px;
+      border-radius: 10px;
+      background: #fefefe;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .risk-badge {
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .risk-low {
+      background-color: #4CAF50;
+    }
+
+    .risk-high {
+      background-color: #F44336;
+    }
+
+    .score-section {
+      margin-top: 20px;
+      text-align: center;
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
 <body>
+  <div class="container">
+    <h1>Cardiotoxicity Risk Calculator</h1>
+    <form id="riskForm">
+      <label for="cardiotoxicity">Cardiotoxicity (A):</label>
+      <input type="number" id="cardiotoxicity" required>
+
+      <label for="dose">Dose (B):</label>
+      <input type="number" id="dose" required>
+
+      <label for="platelet">Platelet (C):</label>
+      <input type="number" id="platelet" required>
+
+      <label for="creatinine">Creatinine (D):</label>
+      <input type="number" id="creatinine" required>
+
+      <button type="submit">Calculate Risk</button>
+    </form>
+
     <div class="output" id="outputSection" style="display:none;">
-        <div class="report-card">
-          <h2>Patient Report</h2>
-          <p><strong>Cardiotoxicity:</strong> <span id="v_cardiotoxicity"></span></p>
-          <p><strong>Dose:</strong> <span id="v_dose"></span></p>
-          <p><strong>Platelet:</strong> <span id="v_platelet"></span></p>
-          <p><strong>Creatinine:</strong> <span id="v_creatinine"></span></p>
-      
-          <div class="score-section">
-            <canvas id="scoreGauge" width="200" height="100"></canvas>
-            <p><strong>Score:</strong> <span id="score"></span></p>
-            <p><strong>Risk Level:</strong> 
-              <span id="riskLevel" class="risk-badge"></span>
-            </p>
-          </div>
-      
-          <button id="downloadBtn">Download as PDF</button>
+      <div class="report-card">
+        <h2>Patient Report</h2>
+        <p><strong>Cardiotoxicity:</strong> <span id="v_cardiotoxicity"></span></p>
+        <p><strong>Dose:</strong> <span id="v_dose"></span></p>
+        <p><strong>Platelet:</strong> <span id="v_platelet"></span></p>
+        <p><strong>Creatinine:</strong> <span id="v_creatinine"></span></p>
+
+        <div class="score-section">
+          <canvas id="scoreGauge" width="200" height="100"></canvas>
+          <p><strong>Score:</strong> <span id="score"></span></p>
+          <p><strong>Risk Level:</strong>
+            <span id="riskLevel" class="risk-badge"></span>
+          </p>
         </div>
+
+        <button id="downloadBtn">Download as PDF</button>
       </div>
-      
+    </div>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script>
- document.getElementById('riskForm').addEventListener('submit', function (e) {
-  e.preventDefault();
+    document.getElementById('riskForm').addEventListener('submit', function (e) {
+      e.preventDefault();
 
-  const A = parseFloat(document.getElementById('cardiotoxicity').value);
-  const B = parseFloat(document.getElementById('dose').value);
-  const C = parseFloat(document.getElementById('platelet').value);
-  const D = parseFloat(document.getElementById('creatinine').value);
+      const A = parseFloat(document.getElementById('cardiotoxicity').value);
+      const B = parseFloat(document.getElementById('dose').value);
+      const C = parseFloat(document.getElementById('platelet').value);
+      const D = parseFloat(document.getElementById('creatinine').value);
 
-  const score = 1.8113 * A + 0.6296 * B - 0.6255 * C + 1.339 * D;
-  const risk = score > 0.771327786 ? "High Risk" : "Low Risk";
+      const score = 1.8113 * A + 0.6296 * B - 0.6255 * C + 1.339 * D;
+      const risk = score > 0.771327786 ? "High Risk" : "Low Risk";
 
-  // Show input values in report
-  document.getElementById('v_cardiotoxicity').textContent = A;
-  document.getElementById('v_dose').textContent = B;
-  document.getElementById('v_platelet').textContent = C;
-  document.getElementById('v_creatinine').textContent = D;
+      // Show input values in report
+      document.getElementById('v_cardiotoxicity').textContent = A;
+      document.getElementById('v_dose').textContent = B;
+      document.getElementById('v_platelet').textContent = C;
+      document.getElementById('v_creatinine').textContent = D;
 
-  document.getElementById('score').textContent = score.toFixed(4);
+      document.getElementById('score').textContent = score.toFixed(4);
 
-  const riskLevelEl = document.getElementById('riskLevel');
-  riskLevelEl.textContent = risk;
-  riskLevelEl.className = 'risk-badge ' + (risk === "High Risk" ? 'risk-high' : 'risk-low');
+      const riskLevelEl = document.getElementById('riskLevel');
+      riskLevelEl.textContent = risk;
+      riskLevelEl.className = 'risk-badge ' + (risk === "High Risk" ? 'risk-high' : 'risk-low');
 
-  document.getElementById('outputSection').style.display = 'block';
+      document.getElementById('outputSection').style.display = 'block';
 
-  // Draw Gauge
-  drawGauge(score);
-});
+      // Draw Gauge
+      drawGauge(score);
+    });
 
-let chart;
-function drawGauge(score) {
-  const ctx = document.getElementById('scoreGauge').getContext('2d');
-  if (chart) chart.destroy();
+    let chart;
+    function drawGauge(score) {
+      const ctx = document.getElementById('scoreGauge').getContext('2d');
+      if (chart) chart.destroy();
 
-  chart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      datasets: [{
-        data: [Math.min(score, 2), 2 - Math.min(score, 2)],
-        backgroundColor: [score > 0.7713 ? '#F44336' : '#4CAF50', '#ddd'],
-        borderWidth: 0,
-        circumference: 180,
-        rotation: 270,
-        cutout: '75%'
-      }]
-    },
-    options: {
-      responsive: false,
-      plugins: {
-        tooltip: { enabled: false },
-        legend: { display: false }
-      }
+      chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          datasets: [{
+            data: [Math.min(score, 2), 2 - Math.min(score, 2)],
+            backgroundColor: [score > 0.7713 ? '#F44336' : '#4CAF50', '#ddd'],
+            borderWidth: 0,
+            circumference: 180,
+            rotation: 270,
+            cutout: '75%'
+          }]
+        },
+        options: {
+          responsive: false,
+          plugins: {
+            tooltip: { enabled: false },
+            legend: { display: false }
+          }
+        }
+      });
     }
-  });
-}
 
-document.getElementById('downloadBtn').addEventListener('click', function () {
-  const element = document.getElementById('result-content');
-  html2pdf().from(element).save('Cardiotoxicity_Risk_Report.pdf');
-});
-
-
+    document.getElementById('downloadBtn').addEventListener('click', function () {
+      const element = document.getElementById('outputSection');
+      html2pdf().from(element).save('Cardiotoxicity_Risk_Report.pdf');
+    });
   </script>
 </body>
 </html>
